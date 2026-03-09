@@ -1,3 +1,5 @@
+import chromium from '@sparticuz/chromium'
+import puppeteer from 'puppeteer-core'
 import { buildInvoiceHtml } from './template'
 import type { InvoiceData } from '@/types'
 
@@ -8,17 +10,16 @@ export async function generateInvoicePdf(invoice: InvoiceData): Promise<Buffer> 
   const isElectron = !!(process.versions && (process.versions as Record<string, string>).electron)
 
   if (isElectron) {
-    // Running inside Electron — use BrowserWindow.printToPDF via the electron/pdf module
-    // The API route runs in the same Node.js process as Electron main process
     const { generatePdfFromHtml } = require('../../../electron/dist/pdf')
     return generatePdfFromHtml(html)
   }
 
-  // Fallback: use Puppeteer for development (next dev without Electron)
-  const puppeteer = require('puppeteer')
+  // Use @sparticuz/chromium for serverless (Vercel) and local dev
   const browser = await puppeteer.launch({
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    executablePath: await chromium.executablePath(),
+    headless: chromium.headless,
   })
 
   try {
