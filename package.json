@@ -1,0 +1,49 @@
+{
+  "name": "rmw-internal-tool",
+  "version": "1.0.0",
+  "private": true,
+  "main": "electron/dist/main.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "electron:dev": "tsc -p electron/tsconfig.json && concurrently -k \"next dev\" \"wait-on http://localhost:3000 && electron-forge start\"",
+    "electron:compile": "tsc -p electron/tsconfig.json",
+    "electron:package": "next build && tsc -p electron/tsconfig.json && electron-forge package",
+    "electron:make": "next build && tsc -p electron/tsconfig.json && electron-forge make"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "@types/node": "^25.3.5",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "autoprefixer": "^10.4.27",
+    "electron-squirrel-startup": "^1.0.1",
+    "next": "^14.2.35",
+    "postcss": "^8.5.8",
+    "prisma": "^5.22.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^5.9.3"
+  },
+  "prisma": {
+    "seed": "npx tsx prisma/seed.ts"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^7.11.1",
+    "@electron-forge/maker-deb": "^7.11.1",
+    "@electron-forge/maker-rpm": "^7.11.1",
+    "@electron-forge/maker-squirrel": "^7.11.1",
+    "@electron-forge/maker-zip": "^7.11.1",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.11.1",
+    "@electron-forge/plugin-fuses": "^7.11.1",
+    "@electron/fuses": "^1.8.0",
+    "concurrently": "^9.2.1",
+    "dotenv": "^17.3.1",
+    "electron": "^28.3.3",
+    "puppeteer": "^24.38.0",
+    "tsx": "^4.21.0",
+    "wait-on": "^9.0.4"
+  }
+}
